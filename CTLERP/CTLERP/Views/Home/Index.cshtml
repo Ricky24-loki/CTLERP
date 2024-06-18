@@ -1,0 +1,217 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container">
+    <h1 class="text-center my-4">Dashboard</h1>
+
+    <div class="row">
+        <!-- Last Orders Section -->
+        <div class="col-md-6 dashboard-section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Ultimele Comenzi</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Descriere</th>
+                                    <th>Data</th>
+                                    <th>Suma Datorată</th>
+                                    <th>Detalii</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in ViewBag.LastOrders)
+                                {
+                                    <tr class="table-row">
+                                        <td>@order.Id</td>
+                                        <td>@order.Description</td>
+                                        <td>@order.Date.ToString("dd/MM/yyyy")</td>
+                                        <td>@order.AmountDue.ToString("0.00") RON</td>
+                                        <td>
+                                            <a asp-action="Details" asp-controller="Orders" asp-route-id="@order.Id" class="btn btn-elegant-orange btn-sm">Detalii</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Low In Stock Section -->
+        <div class="col-md-6 dashboard-section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Produse cu Stoc Mic</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Nume</th>
+                                    <th>Cantitate</th>
+                                    <th>Detalii</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in ViewBag.ProductsLowInStock)
+                                {
+                                    <tr class="table-row">
+                                        <td>@product.Name</td>
+                                        <td>@product.Quantity</td>
+                                        <td>
+                                            <a asp-action="Edit" asp-controller="Products" asp-route-id="@product.Id" class="btn btn-elegant-orange btn-sm">Detalii</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Most Active Partners Section -->
+        <div class="col-md-12 dashboard-section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Cei Mai Activi Parteneri</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Nume</th>
+                                    <th>Email</th>
+                                    <th>Număr Comenzi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var partner in ViewBag.MostActivePartners)
+                                {
+                                    <tr class="table-row">
+                                        <td>@partner.Name</td>
+                                        <td>@partner.Email</td>
+                                        <td>@partner.Orders.Count</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa; /* Light grayish background */
+        color: #333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    .card-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-color: #d5e8d4; /* Muted green */
+        border-bottom: 1px solid #c8e6c9;
+    }
+
+    .table-responsive {
+        margin-top: 20px;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f0f0f0;
+    }
+
+    .bg-muted-green {
+        background-color: #d5e8d4; /* Muted green */
+    }
+
+    .text-dark {
+        color: #333 !important;
+    }
+
+    .btn {
+        margin: 5px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        padding: 5px 15px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-elegant-green {
+        color: #fff;
+        background-color: #5a8d72;
+        border: none;
+    }
+
+        .btn-elegant-green:hover {
+            background-color: #4a755e;
+        }
+
+    .btn-elegant-red {
+        color: #fff;
+        background-color: #b35f5f;
+        border: none;
+    }
+
+        .btn-elegant-red:hover {
+            background-color: #9a4f4f;
+        }
+
+    .btn-elegant-blue {
+        color: #fff;
+        background-color: #5f87b3;
+        border: none;
+    }
+
+        .btn-elegant-blue:hover {
+            background-color: #4e6e91;
+        }
+
+    .btn-elegant-orange {
+        color: #fff;
+        background-color: #ffb347;
+        border: none;
+    }
+
+        .btn-elegant-orange:hover {
+            background-color: #ffa500;
+        }
+
+    .table-row:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .table-row:nth-child(odd) {
+        background-color: #ffffff;
+    }
+
+    .table thead th {
+        background-color: #d5e8d4;
+        color: #333;
+    }
+</style>

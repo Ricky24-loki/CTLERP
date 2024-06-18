@@ -1,0 +1,207 @@
+﻿@model CTLERP.Models.Partner
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Adăugați un Partener Nou</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-muted-green text-dark">
+            <h2 class="card-title mb-0">Detalii Partener</h2>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm(actionName: "New", controllerName: "Partners", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "partnerForm" }))
+            {
+                <div class="form-group row">
+                    <label for="Name" class="col-sm-3 col-form-label">Nume Partener</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @id = "Name" })
+                        <div class="text-danger" id="NameError"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Address" class="col-sm-3 col-form-label">Adresă</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @id = "Address" })
+                        <div class="text-danger" id="AddressError"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="PhoneNumber" class="col-sm-3 col-form-label">Număr de Telefon</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @id = "PhoneNumber" })
+                        <div class="text-danger" id="PhoneNumberError"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Fax" class="col-sm-3 col-form-label">Fax</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Fax, new { @class = "form-control", @id = "Fax" })
+                        <div class="text-danger" id="FaxError"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Email" class="col-sm-3 col-form-label">Email</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @id = "Email" })
+                        <div class="text-danger" id="EmailError"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="PartnerTypeId" class="col-sm-3 col-form-label">Tip Partener</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(m => m.PartnerTypeId, new SelectList(Model.Type, "Value", "Text"), "Selectați Tipul de Partener", new { @class = "form-control", @id = "PartnerTypeId" })
+                        <div class="text-danger" id="PartnerTypeIdError"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-elegant-green">Adăugați Partener</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            var form = document.getElementById("partnerForm");
+            form.addEventListener("submit", function (event) {
+                var isValid = true;
+
+                // Clear previous errors
+                document.getElementById("NameError").textContent = "";
+                document.getElementById("AddressError").textContent = "";
+                document.getElementById("PhoneNumberError").textContent = "";
+                document.getElementById("FaxError").textContent = "";
+                document.getElementById("EmailError").textContent = "";
+                document.getElementById("PartnerTypeIdError").textContent = "";
+
+                // Validate Name
+                var nameInput = document.getElementById("Name");
+                if (!nameInput.value.trim()) {
+                    document.getElementById("NameError").textContent = "Te rog completează câmpul!";
+                    isValid = false;
+                }
+
+                // Validate Address
+                var addressInput = document.getElementById("Address");
+                if (!addressInput.value.trim()) {
+                    document.getElementById("AddressError").textContent = "Te rog completează câmpul!";
+                    isValid = false;
+                }
+
+                // Validate PhoneNumber
+                var phoneNumberInput = document.getElementById("PhoneNumber");
+                if (!phoneNumberInput.value.trim()) {
+                    document.getElementById("PhoneNumberError").textContent = "Te rog completează câmpul!";
+                    isValid = false;
+                }
+
+                // Validate Email
+                var emailInput = document.getElementById("Email");
+                if (!emailInput.value.trim()) {
+                    document.getElementById("EmailError").textContent = "Te rog completează câmpul!";
+                    isValid = false;
+                }
+
+                // Validate PartnerTypeId
+                var partnerTypeIdInput = document.getElementById("PartnerTypeId");
+                if (partnerTypeIdInput.selectedIndex === 0) {
+                    document.getElementById("PartnerTypeIdError").textContent = "Te rog selectați un tip de partener!";
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    event.preventDefault(); // Prevent the form from submitting
+                } else {
+                    // Perform an AJAX form submission
+                    event.preventDefault(); // Prevent the default form submission
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open(form.method, form.action, true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            // Reset the form fields
+                            form.reset();
+
+                            // Optional: Show a confirmation message
+                            var confirmationMessage = document.createElement("div");
+                            confirmationMessage.className = "alert alert-success";
+                            confirmationMessage.textContent = "Partener adăugat";
+                            form.insertAdjacentElement("beforebegin", confirmationMessage);
+
+                            // Remove the message after 3 seconds
+                            setTimeout(function () {
+                                confirmationMessage.remove();
+                            }, 3000);
+                        }
+                    };
+
+                    // Serialize form data
+                    var formData = new FormData(form);
+                    var formSerialized = new URLSearchParams(formData).toString();
+
+                    xhr.send(formSerialized);
+                }
+            });
+        });
+    </script>
+}
+
+<style>
+    body {
+        background-color: #f8f9fa; /* Light grayish background */
+        color: #333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    .card-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-color: #d5e8d4; /* Muted green */
+        border-bottom: 1px solid #c8e6c9;
+    }
+
+    .btn {
+        margin: 5px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        padding: 5px 15px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-elegant-green {
+        color: #fff;
+        background-color: #5a8d72;
+        border: none;
+    }
+
+        .btn-elegant-green:hover {
+            background-color: #4a755e;
+        }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .col-form-label {
+        font-weight: bold;
+    }
+</style>

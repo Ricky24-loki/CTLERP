@@ -1,0 +1,169 @@
+﻿@model CTLERP.Models.Order
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Adăugați o Comandă Nouă</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-muted-green text-dark">
+            <h2 class="card-title mb-0">Detalii Comandă</h2>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm(actionName: "New", controllerName: "Orders", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "orderForm" }))
+            {
+                <div class="form-group row">
+                    <label for="Description" class="col-sm-3 col-form-label">Descriere Comandă</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @id = "Description" })
+                        <div class="text-danger" id="DescriptionError"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Date" class="col-sm-3 col-form-label">Data</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Date, "{0:yyyy-MM-dd}", new { @class = "form-control", @id = "Date", type = "date" })
+                        <div class="text-danger" id="DateError"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="PartnerId" class="col-sm-3 col-form-label">Selectați Partener</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(m => m.PartnerId, ViewBag.Partners as SelectList, "Selectați Partener", new { @class = "form-control", @id = "PartnerId" })
+                        <div class="text-danger" id="PartnerIdError"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-elegant-green">Adăugați Comandă</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            var form = document.getElementById("orderForm");
+            form.addEventListener("submit", function (event) {
+                var isValid = true;
+
+                // Clear previous errors
+                document.getElementById("DescriptionError").textContent = "";
+                document.getElementById("DateError").textContent = "";
+                document.getElementById("PartnerIdError").textContent = "";
+
+                // Validate Description
+                var descriptionInput = document.getElementById("Description");
+                if (!descriptionInput.value.trim()) {
+                    document.getElementById("DescriptionError").textContent = "Te rog completează câmpul!";
+                    isValid = false;
+                }
+
+                // Validate Date
+                var dateInput = document.getElementById("Date");
+                if (!dateInput.value.trim()) {
+                    document.getElementById("DateError").textContent = "Te rog completează câmpul!";
+                    isValid = false;
+                }
+
+                // Validate PartnerId
+                var partnerIdInput = document.getElementById("PartnerId");
+                if (partnerIdInput.selectedIndex === 0) {
+                    document.getElementById("PartnerIdError").textContent = "Te rog selectați un partener!";
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    event.preventDefault(); // Prevent the form from submitting
+                } else {
+                    // Perform an AJAX form submission
+                    event.preventDefault(); // Prevent the default form submission
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open(form.method, form.action, true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            // Reset the form fields
+                            form.reset();
+
+                            // Optional: Show a confirmation message
+                            var confirmationMessage = document.createElement("div");
+                            confirmationMessage.className = "alert alert-success";
+                            confirmationMessage.textContent = "Comandă adăugată";
+                            form.insertAdjacentElement("beforebegin", confirmationMessage);
+
+                            // Remove the message after 3 seconds
+                            setTimeout(function () {
+                                confirmationMessage.remove();
+                            }, 3000);
+                        }
+                    };
+
+                    // Serialize form data
+                    var formData = new FormData(form);
+                    var formSerialized = new URLSearchParams(formData).toString();
+
+                    xhr.send(formSerialized);
+                }
+            });
+        });
+    </script>
+}
+
+<style>
+    body {
+        background-color: #f8f9fa; /* Light grayish background */
+        color: #333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    .card-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-color: #d5e8d4; /* Muted green */
+        border-bottom: 1px solid #c8e6c9;
+    }
+
+    .btn {
+        margin: 5px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        padding: 5px 15px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-elegant-green {
+        color: #fff;
+        background-color: #5a8d72;
+        border: none;
+    }
+
+        .btn-elegant-green:hover {
+            background-color: #4a755e;
+        }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .col-form-label {
+        font-weight: bold;
+    }
+</style>

@@ -1,0 +1,91 @@
+﻿@model CTLERP.Models.Invoice
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Creează Factură</h1>
+
+    @using (Html.BeginForm("New", "Invoices", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.HiddenFor(m => m.OrderId)
+        @Html.HiddenFor(m => m.AmountDue)
+        @Html.HiddenFor(m => m.Date)
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-muted-green text-dark">
+                <h2 class="card-title mb-0">Detalii Factură</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.DueDate, "Data Scadenței", htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.DueDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        @Html.ValidationMessageFor(m => m.DueDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12 text-center">
+                        <input type="submit" value="Creează Factură" class="btn btn-elegant-blue" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa; /* Light grayish background */
+        color: #333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    .card-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-color: #d5e8d4; /* Muted green */
+        border-bottom: 1px solid #c8e6c9;
+    }
+
+    .form-horizontal .control-label {
+        text-align: left;
+    }
+
+    .btn {
+        margin: 5px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        padding: 5px 15px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-elegant-blue {
+        color: #fff;
+        background-color: #5f87b3;
+        border: none;
+    }
+
+        .btn-elegant-blue:hover {
+            background-color: #4e6e91;
+        }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .col-form-label {
+        font-weight: bold;
+    }
+</style>

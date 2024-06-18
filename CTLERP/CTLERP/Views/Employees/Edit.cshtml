@@ -1,0 +1,140 @@
+﻿@model CTLERP.Models.Employee
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Editează Angajat</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-muted-green text-dark">
+            <h2 class="card-title mb-0">Detalii Angajat</h2>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm(actionName: "Edit", controllerName: "Employees", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "employeeForm" }))
+            {
+                @Html.HiddenFor(m => m.EmployeeId)
+                <div class="form-group row">
+                    <label for="FirstName" class="col-sm-3 col-form-label">Prenume</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @id = "FirstName" })
+                        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="LastName" class="col-sm-3 col-form-label">Nume</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @id = "LastName" })
+                        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="DepartmentId" class="col-sm-3 col-form-label">Departament</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.DepartmentId, new { @class = "form-control", @id = "DepartmentId" })
+                        @Html.ValidationMessageFor(m => m.DepartmentId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Position" class="col-sm-3 col-form-label">Poziție</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Position, new { @class = "form-control", @id = "Position" })
+                        @Html.ValidationMessageFor(m => m.Position, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="HireDate" class="col-sm-3 col-form-label">Data Angajării</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.HireDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", @id = "HireDate" })
+                        @Html.ValidationMessageFor(m => m.HireDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Salary" class="col-sm-3 col-form-label">Salariu</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Salary, new { @class = "form-control", @id = "Salary", @type = "number", @step = "0.01" })
+                        @Html.ValidationMessageFor(m => m.Salary, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Email" class="col-sm-3 col-form-label">Email</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @id = "Email" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="PhoneNumber" class="col-sm-3 col-form-label">Număr de Telefon</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @id = "PhoneNumber" })
+                        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="ManagerId" class="col-sm-3 col-form-label">Manager</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(m => m.ManagerId, ViewBag.Managers as SelectList, "Selectați Manager", new { @class = "form-control", @id = "ManagerId" })
+                        @Html.ValidationMessageFor(m => m.ManagerId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-elegant-green">Salvați Modificările</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa; /* Light grayish background */
+        color: #333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    .card-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-color: #d5e8d4; /* Muted green */
+        border-bottom: 1px solid #c8e6c9;
+    }
+
+    .btn {
+        margin: 5px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        padding: 5px 15px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-elegant-green {
+        color: #fff;
+        background-color: #5a8d72;
+        border: none;
+    }
+
+        .btn-elegant-green:hover {
+            background-color: #4a755e;
+        }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .col-form-label {
+        font-weight: bold;
+    }
+</style>

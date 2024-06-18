@@ -1,0 +1,126 @@
+﻿@model CTLERP.Models.Order
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Editează Comanda</h1>
+
+    @using (Html.BeginForm(actionName: "Edit", controllerName: "Orders", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "orderForm" }))
+    {
+        @Html.HiddenFor(m => m.Id)
+        <div class="card shadow-sm">
+            <div class="card-header bg-muted-green text-dark">
+                <h2 class="card-title mb-0">Detalii Comandă</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group row mb-4">
+                    @Html.LabelFor(m => m.Description, "Descriere Comandă", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row mb-4">
+                    @Html.LabelFor(m => m.IsValid, "Este Validă", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.CheckBoxFor(m => m.IsValid, new { @class = "square-checkbox" })
+                        @Html.ValidationMessageFor(m => m.IsValid, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row mb-4">
+                    @Html.LabelFor(m => m.PartnerId, "Partener", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(m => m.PartnerId, ViewBag.Partners as SelectList, "Selectați Partenerul", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PartnerId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-offset-2 col-md-10 text-center">
+                        <button type="submit" class="btn btn-elegant-green">Salvează Modificările</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa; /* Light grayish background */
+        color: #333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    .card-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-color: #d5e8d4; /* Muted green */
+        border-bottom: 1px solid #c8e6c9;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .control-label {
+        text-align: left;
+    }
+
+    .btn {
+        margin: 5px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        padding: 5px 15px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-elegant-green {
+        color: #fff;
+        background-color: #5a8d72;
+        border: none;
+    }
+
+        .btn-elegant-green:hover {
+            background-color: #4a755e;
+        }
+
+    .square-checkbox {
+        width: 20px;
+        height: 20px;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: white;
+        border: 1px solid #000;
+        cursor: pointer;
+        outline: none;
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+    }
+
+        .square-checkbox:checked {
+            background-color: #007bff;
+            border: 1px solid #007bff;
+        }
+
+            .square-checkbox:checked:after {
+                content: '';
+                position: absolute;
+                top: 2px;
+                left: 6px;
+                width: 6px;
+                height: 12px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
+            }
+</style>

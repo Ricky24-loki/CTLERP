@@ -1,0 +1,135 @@
+﻿@model IEnumerable<CTLERP.Models.MeasureUnit>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">UNITĂȚI DE MĂSURĂ</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-muted-green text-dark">
+            <h2 class="card-title mb-0">Lista de Unități de Măsură</h2>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="bg-muted-green text-dark">
+                    <tr>
+                        <th>Nume</th>
+                        <th>Prescurtare</th>
+                        <th>Acțiuni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var measureUnit in ViewBag.MeasureUnits)
+                    {
+                        <tr class="table-row">
+                            <td>@measureUnit.Name</td>
+                            <td>@measureUnit.Abbreviation</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@measureUnit.Id" class="btn btn-elegant-green btn-sm">Editează</a>
+                                <form asp-action="Delete" method="post" onsubmit="return confirm('Sunteți sigur că doriți să ștergeți această unitate de măsură?')" style="display:inline-block;">
+                                    <input type="hidden" name="id" value="@measureUnit.Id" />
+                                    <button type="submit" class="btn btn-elegant-red btn-sm">Șterge</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            <a asp-action="New" class="btn btn-elegant-blue">Adaugă Unitate de Măsură Nouă</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa; /* Light grayish background */
+        color: #333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    .card-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-color: #d5e8d4; /* Muted green */
+        border-bottom: 1px solid #c8e6c9;
+    }
+
+    .table-responsive {
+        margin-top: 20px;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f0f0f0;
+    }
+
+    .bg-muted-green {
+        background-color: #d5e8d4; /* Muted green */
+    }
+
+    .text-dark {
+        color: #333 !important;
+    }
+
+    .btn {
+        margin: 5px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        padding: 5px 15px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-elegant-green {
+        color: #fff;
+        background-color: #5a8d72;
+        border: none;
+    }
+
+        .btn-elegant-green:hover {
+            background-color: #4a755e;
+        }
+
+    .btn-elegant-red {
+        color: #fff;
+        background-color: #b35f5f;
+        border: none;
+    }
+
+        .btn-elegant-red:hover {
+            background-color: #9a4f4f;
+        }
+
+    .btn-elegant-blue {
+        color: #fff;
+        background-color: #5f87b3;
+        border: none;
+    }
+
+        .btn-elegant-blue:hover {
+            background-color: #4e6e91;
+        }
+
+    .table-row:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .table-row:nth-child(odd) {
+        background-color: #ffffff;
+    }
+
+    .table thead th {
+        background-color: #d5e8d4;
+        color: #333;
+    }
+</style>

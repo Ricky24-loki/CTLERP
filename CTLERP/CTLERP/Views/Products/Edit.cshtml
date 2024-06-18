@@ -1,0 +1,183 @@
+﻿@model CTLERP.Models.Product
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Editați Produsul</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-muted-green text-dark">
+            <h2 class="card-title mb-0">Detalii Produs</h2>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm(actionName: "Edit", controllerName: "Products", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "productForm" }))
+            {
+                @Html.HiddenFor(m => m.Id)
+
+                <div class="form-group row">
+                    <label for="Name" class="col-sm-3 col-form-label">Nume Articol</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @id = "Name" })
+                        <div class="text-danger" id="NameError"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Quantity" class="col-sm-3 col-form-label">Cantitate</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control", @id = "Quantity" })
+                        <div class="text-danger" id="QuantityError"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Price" class="col-sm-3 col-form-label">Preț Produs (RON)</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Price, new { @class = "form-control", @id = "Price" })
+                        <div class="text-danger" id="PriceError"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="MeasureUnitId" class="col-sm-3 col-form-label">Selectați unitatea de măsură</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(m => m.MeasureUnitId, new SelectList(Model.Unit, "Value", "Text"), "Unități de măsură", new { @class = "form-control", @id = "MeasureUnitId" })
+                        <div class="text-danger" id="MeasureUnitIdError"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-elegant-green">Salvează Modificările</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            var form = document.getElementById("productForm");
+            form.addEventListener("submit", function (event) {
+                var isValid = true;
+
+                // Clear previous errors
+                document.getElementById("NameError").textContent = "";
+                document.getElementById("QuantityError").textContent = "";
+                document.getElementById("PriceError").textContent = "";
+                document.getElementById("MeasureUnitIdError").textContent = "";
+
+                // Validate Name
+                var nameInput = document.getElementById("Name");
+                if (!nameInput.value.trim()) {
+                    document.getElementById("NameError").textContent = "Te rog completează câmpul!";
+                    isValid = false;
+                }
+
+                // Validate Quantity
+                var quantityInput = document.getElementById("Quantity");
+                if (!quantityInput.value.trim()) {
+                    document.getElementById("QuantityError").textContent = "Te rog completează câmpul!";
+                    isValid = false;
+                }
+
+                // Validate Price
+                var priceInput = document.getElementById("Price");
+                if (!priceInput.value.trim()) {
+                    document.getElementById("PriceError").textContent = "Te rog completează câmpul!";
+                    isValid = false;
+                }
+
+                // Validate MeasureUnitId
+                var measureUnitIdInput = document.getElementById("MeasureUnitId");
+                if (measureUnitIdInput.selectedIndex === 0) {
+                    document.getElementById("MeasureUnitIdError").textContent = "Te rog selectați o unitate de măsură!";
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    event.preventDefault(); // Prevent the form from submitting
+                } else {
+                    // Perform an AJAX form submission
+                    event.preventDefault(); // Prevent the default form submission
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open(form.method, form.action, true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            // Optional: Show a confirmation message
+                            var confirmationMessage = document.createElement("div");
+                            confirmationMessage.className = "alert alert-success";
+                            confirmationMessage.textContent = "Modificări salvate";
+                            form.insertAdjacentElement("beforebegin", confirmationMessage);
+
+                            // Remove the message after 3 seconds
+                            setTimeout(function () {
+                                confirmationMessage.remove();
+                            }, 3000);
+                        }
+                    };
+
+                    // Serialize form data
+                    var formData = new FormData(form);
+                    var formSerialized = new URLSearchParams(formData).toString();
+
+                    xhr.send(formSerialized);
+                }
+            });
+        });
+    </script>
+}
+
+<style>
+    body {
+        background-color: #f8f9fa; /* Light grayish background */
+        color: #333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    .card-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-color: #d5e8d4; /* Muted green */
+        border-bottom: 1px solid #c8e6c9;
+    }
+
+    .btn {
+        margin: 5px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        padding: 5px 15px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-elegant-green {
+        color: #fff;
+        background-color: #5a8d72;
+        border: none;
+    }
+
+        .btn-elegant-green:hover {
+            background-color: #4a755e;
+        }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .col-form-label {
+        font-weight: bold;
+    }
+</style>

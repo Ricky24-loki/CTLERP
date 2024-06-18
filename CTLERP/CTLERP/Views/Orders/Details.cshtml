@@ -1,0 +1,186 @@
+﻿@model CTLERP.Models.Order
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Detalii Comandă</h1>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-table-header text-dark">
+            <h2 class="card-title mb-0">Informații Comandă</h2>
+        </div>
+        <div class="card-body">
+            <h3>Descriere: @Model.Description</h3>
+            <p>Data: @Model.Date.ToString("dd/MM/yyyy")</p>
+            <p>Suma Datorată: @string.Format("{0:0.00} RON", @Model.AmountDue)</p>
+            <p>Validă: @(Model.IsValid ? "Da" : "Nu")</p>
+            <p>Partener: @Model.Partner?.Name</p>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-table-header text-dark">
+            <h2 class="card-title mb-0">Articole Comandă</h2>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="bg-table-header text-dark">
+                    <tr>
+                        <th>Produs</th>
+                        <th>Cantitate</th>
+                        <th>Preț</th>
+                        <th>Acțiuni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.OrderItems != null && Model.OrderItems.Any())
+                    {
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            <tr class="table-row">
+                                <td>@item.Product.Name</td>
+                                <td>@item.Quantity</td>
+                                <td>@string.Format("{0:0.00} RON", @item.Price)</td>
+                                <td>
+                                    @using (Html.BeginForm("DeleteOrderItem", "Orders", FormMethod.Post, new { @class = "form-inline" }))
+                                    {
+                                        @Html.Hidden("orderId", Model.Id)
+                                        @Html.Hidden("orderItemId", item.Id)
+                                        <button type="submit" class="btn btn-elegant-red btn-sm" onclick="return confirm('Sunteți sigur că doriți să ștergeți acest articol?');">Șterge</button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Nu există articole.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-table-header text-dark">
+            <h2 class="card-title mb-0">Adaugă Articol Comandă</h2>
+        </div>
+        <div class="card-body">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <p>@error.ErrorMessage</p>
+                    }
+                </div>
+            }
+
+            @using (Html.BeginForm("AddOrderItem", "Orders", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.Hidden("orderId", Model.Id)
+                <div class="form-group mb-3">
+                    @Html.Label("ProductId", "Produs", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("ProductId", ViewBag.Products as SelectList, "Selectați Produsul", new { @class = "form-control" })
+                        @Html.ValidationMessage("ProductId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    @Html.Label("Quantity", "Cantitatea", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Editor("Quantity", new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessage("Quantity", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Adaugă Articol" class="btn btn-elegant-blue" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa; /* Light grayish background */
+        color: #333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    .card-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-color: #a7bd9f; /* Custom header color */
+        border-bottom: 1px solid #c8e6c9;
+    }
+
+    .table-responsive {
+        margin-top: 20px;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f0f0f0;
+    }
+
+    .bg-table-header {
+        background-color: #a7bd9f; /* Custom header color */
+    }
+
+    .text-dark {
+        color: #333 !important;
+    }
+
+    .btn {
+        margin: 5px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        padding: 5px 15px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-elegant-red {
+        color: #fff;
+        background-color: #b35f5f;
+        border: none;
+    }
+
+        .btn-elegant-red:hover {
+            background-color: #9a4f4f;
+        }
+
+    .btn-elegant-blue {
+        color: #fff;
+        background-color: #5f87b3;
+        border: none;
+    }
+
+        .btn-elegant-blue:hover {
+            background-color: #4e6e91;
+        }
+
+    .table-row:nth-child(even) {
+        background-color: #e9e9e9; /* Light gray for even rows */
+    }
+
+    .table-row:nth-child(odd) {
+        background-color: #ffffff; /* White for odd rows */
+    }
+
+    .table thead th {
+        background-color: #a7bd9f; /* Custom header color */
+        color: #333;
+    }
+</style>

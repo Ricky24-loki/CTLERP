@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTLERP", "CTLERP\CTLERP.csproj", "{680963CC-25B6-48E3-A515-B28A11CF06DD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{680963CC-25B6-48E3-A515-B28A11CF06DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{680963CC-25B6-48E3-A515-B28A11CF06DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{680963CC-25B6-48E3-A515-B28A11CF06DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{680963CC-25B6-48E3-A515-B28A11CF06DD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F9D2498C-8811-4D43-96DF-1C122C0C121C}
+	EndGlobalSection
+EndGlobal
